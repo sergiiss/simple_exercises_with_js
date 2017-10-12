@@ -1,3 +1,25 @@
+function changeShow(style, attribute) {
+  var collection = document.getElementsByClassName(style);
+  for (var i = 0; i < collection.length; ++i) {
+    collection[i].style.display = attribute;
+  }
+}
+
+function showActive() {
+  changeShow('through', 'none');
+  changeShow('through-remove', 'block');
+}
+
+function showAll() {
+  changeShow('through', 'block');
+  changeShow('through-remove', 'block');
+}
+
+function showCompleted() {
+  changeShow('through', 'block');
+  changeShow('through-remove', 'none');
+}
+
 function doneTask() {
   if (getComputedStyle(this.parentNode).textDecorationLine == 'line-through') {
     this.parentNode.classList.remove('through');
@@ -8,6 +30,12 @@ function doneTask() {
     this.parentNode.classList.remove('through-remove');
   }
   countTasks();
+}
+
+function destroyCompletedTasks() {
+  while (document.getElementsByClassName('through')) {
+    document.getElementById('input-field').removeChild(document.getElementsByClassName('through')[0]);
+  }
 }
 
 function destroyTask() {
@@ -23,12 +51,15 @@ function destroyTask() {
 
 function countTasks() {
   var counter = document.getElementsByClassName('through-remove').length;
-  document.getElementById('bottom-list0').innerHTML = "<span id='count-tasks'>" + counter + ' tasks left' + "</span>";
 
-  // var compled = document.getElementsByClassName('through');
-  // for (var i = 0; i < comled.length; ++i) {
-  //   compled[i].style.display = 'none';
-  // }
+  document.getElementById('bottom-list0').innerHTML = "<span id='count-tasks'>" + counter +
+  ' tasks left' + "</span>" + "<span id='all'>All</span><span id='active'>Active</span>" +
+  "<span id='completed'>Completed</span>" + "<span id='clear-completed'>Clear completed</span>";
+
+  document.getElementById('bottom-list0').childNodes[1].addEventListener("click", showAll);
+  document.getElementById('bottom-list0').childNodes[2].addEventListener("click", showActive);
+  document.getElementById('bottom-list0').childNodes[3].addEventListener("click", showCompleted);
+  document.getElementById('bottom-list0').childNodes[4].addEventListener("click", destroyCompletedTasks);
 }
 
 function addInput() {
