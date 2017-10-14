@@ -65,21 +65,35 @@ function doneTask(selectString) {
   countTasks();
 }
 
-function destroyCompletedTasks() {
-  while (document.getElementsByClassName('through')[0]) {
-    document.getElementById('input-field').removeChild(document.getElementsByClassName('through')[0]);
-  }
-}
-
-function destroyTask() {
-  document.getElementById('input-field').removeChild(this.parentNode);
-  countTasks();
-
-  if (document.getElementById('bottom-list0').innerHTML == 0) {
+function destroyBottomField() {
+  if (document.getElementById('count-tasks').innerHTML == '0 tasks left') {
     document.body.removeChild(document.getElementById('bottom-list0'));
     document.body.removeChild(document.getElementById('bottom-list1'));
     document.body.removeChild(document.getElementById('bottom-list2'));
   }
+}
+
+function changeArrow() {
+  if (document.getElementsByClassName('new').length == 0) {
+    document.getElementById('select-all-tasks').style.display = '';
+  }
+}
+
+function destroyCompletedTasks() {
+  while (document.getElementsByClassName('through')[0]) {
+    document.getElementById('input-field').removeChild(document.getElementsByClassName('through')[0]);
+  }
+
+  destroyBottomField();
+  changeArrow();
+}
+
+function destroyTask() {
+  document.getElementById('input-field').removeChild(this.parentNode);
+
+  countTasks();
+  destroyBottomField();
+  changeArrow();
 }
 
 function countTasks() {
@@ -133,5 +147,6 @@ function addInput() {
     div.lastElementChild.addEventListener("click", destroyTask);
 
     elem.value = '';
+    document.getElementById('select-all-tasks').style.display = 'block';
   }
 }
