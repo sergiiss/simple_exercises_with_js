@@ -5,6 +5,30 @@ function changeShow(style, attribute) {
   }
 }
 
+function selectAllTasks() {
+  var allTasks = document.getElementsByClassName('choose');
+  var getStyle = getComputedStyle(document.getElementById('select-all-tasks'));
+
+  if (getStyle.opacity == 0.3) {
+    document.getElementById('select-all-tasks').style.opacity = 0.9;
+    for (var i = 0; i < allTasks.length; i++) {
+      allTasks[i].parentNode.classList.remove('through-remove');
+      allTasks[i].parentNode.classList.add('through');
+      allTasks[i].checked = true;
+    }
+  }
+  else {
+    document.getElementById('select-all-tasks').style.opacity = '';
+    for (var i = 0; i < allTasks.length; i++) {
+      allTasks[i].parentNode.classList.add('through-remove');
+      allTasks[i].parentNode.classList.remove('through');
+      allTasks[i].checked = false;
+    }
+  }
+  countTasks();
+  showAll();
+}
+
 function showActive() {
   changeShow('through', 'none');
   changeShow('through-remove', 'block');
@@ -20,20 +44,29 @@ function showCompleted() {
   changeShow('through-remove', 'none');
 }
 
-function doneTask() {
-  if (getComputedStyle(this.parentNode).textDecorationLine == 'line-through') {
-    this.parentNode.classList.remove('through');
-    this.parentNode.classList.add('through-remove');
+function doneTask(selectString) {
+  if (getComputedStyle(selectString.parentNode).textDecorationLine == 'line-through') {
+    selectString.parentNode.classList.remove('through');
+    selectString.parentNode.classList.add('through-remove');
+    document.getElementById('select-all-tasks').style.opacity = '';
   }
   else {
-    this.parentNode.classList.add('through');
-    this.parentNode.classList.remove('through-remove');
+    selectString.parentNode.classList.add('through');
+    selectString.parentNode.classList.remove('through-remove');
   }
+
+  var quantityTasks = document.getElementsByClassName('through').length;
+  var quantityAllTasks = document.getElementsByClassName('new').length;
+
+  if (quantityTasks == quantityAllTasks) {
+    document.getElementById('select-all-tasks').style.opacity = 0.9;
+  }
+
   countTasks();
 }
 
 function destroyCompletedTasks() {
-  while (document.getElementsByClassName('through')) {
+  while (document.getElementsByClassName('through')[0]) {
     document.getElementById('input-field').removeChild(document.getElementsByClassName('through')[0]);
   }
 }
@@ -60,12 +93,14 @@ function countTasks() {
   document.getElementById('bottom-list0').childNodes[2].addEventListener("click", showActive);
   document.getElementById('bottom-list0').childNodes[3].addEventListener("click", showCompleted);
   document.getElementById('bottom-list0').childNodes[4].addEventListener("click", destroyCompletedTasks);
+  document.getElementById('select-all-tasks').addEventListener("click", selectAllTasks);
 }
 
 function addInput() {
-  if (event.keyCode == 13) {
+  var elem = document.getElementById('list');
+
+  if (event.keyCode == 13 && elem.value != '') {
     var div = document.createElement('div');
-    var elem = document.getElementById('list');
     var check = document.createElement('input');
     var destroy = document.createElement('div');
 
@@ -75,7 +110,7 @@ function addInput() {
     check.type = "checkbox";
     destroy.className = "destroy";
 
-    if (!document.getElementsByClassName('new')[0]) {
+    if (!document.getElementsByClassName('new')[0] && !document.getElementById('bottom-list0')) {
       var bottom0 = document.createElement('div');
       var bottom1 = document.createElement('div');
       var bottom2 = document.createElement('div');
@@ -94,7 +129,7 @@ function addInput() {
 
     countTasks();
 
-    div.firstElementChild.addEventListener("click", doneTask);
+    div.firstElementChild.addEventListener("click", function() { doneTask(this); });
     div.lastElementChild.addEventListener("click", destroyTask);
 
     elem.value = '';
