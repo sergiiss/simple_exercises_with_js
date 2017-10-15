@@ -58,8 +58,11 @@ function doneTask(selectString) {
   var quantityTasks = document.getElementsByClassName('through').length;
   var quantityAllTasks = document.getElementsByClassName('new').length;
 
-  if (quantityTasks == quantityAllTasks) {
+  if (quantityTasks == quantityAllTasks && quantityTasks != 0) {
     document.getElementById('select-all-tasks').style.opacity = 0.9;
+  }
+  else {
+    document.getElementById('select-all-tasks').style.opacity = '';
   }
 
   countTasks();
@@ -75,6 +78,7 @@ function destroyBottomField() {
 
 function changeArrow() {
   if (document.getElementsByClassName('new').length == 0) {
+    document.getElementById('select-all-tasks').style.opacity = '';
     document.getElementById('select-all-tasks').style.display = '';
   }
 }
