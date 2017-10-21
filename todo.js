@@ -6,7 +6,7 @@ function changeShow(style, attribute) {
 }
 
 function selectAllTasks() {
-  var allTasks = document.getElementsByClassName('choose');
+  var allTasks = $('.choose');
   var getStyle = getComputedStyle(document.getElementById('select-all-tasks'));
 
   if (getStyle.opacity == 0.3) {
