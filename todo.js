@@ -6,7 +6,7 @@ function changeShow(style, attribute) {
 }
 
 function selectAllTasks() {
-  var allTasks = $('.choose');
+  var allTasks = document.getElementsByClassName('choose');
   var getStyle = getComputedStyle(document.getElementById('select-all-tasks'));
 
   if (getStyle.opacity == 0.3) {
@@ -69,7 +69,7 @@ function doneTask(selectString) {
 }
 
 function destroyBottomField() {
-  if (document.getElementById('count-tasks').innerHTML == '0 tasks left') {
+  if (document.getElementsByClassName('new').length == 0) {
     document.body.removeChild(document.getElementById('bottom-list0'));
     document.body.removeChild(document.getElementById('bottom-list1'));
     document.body.removeChild(document.getElementById('bottom-list2'));
