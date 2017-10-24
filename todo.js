@@ -6,11 +6,11 @@ function changeShow(style, attribute) {
 }
 
 function selectAllTasks() {
-  var allTasks = document.getElementsByClassName('choose');
-  var getStyle = getComputedStyle(document.getElementById('select-all-tasks'));
+  var allTasks = $('.choose');
+  var getStyle = getComputedStyle($('#select-all-tasks')[0]);
 
   if (getStyle.opacity == 0.3) {
-    document.getElementById('select-all-tasks').style.opacity = 0.9;
+    $('#select-all-tasks')[0].style.opacity = 0.9;
     for (var i = 0; i < allTasks.length; i++) {
       allTasks[i].parentNode.classList.remove('through-remove');
       allTasks[i].parentNode.classList.add('through');
@@ -18,7 +18,7 @@ function selectAllTasks() {
     }
   }
   else {
-    document.getElementById('select-all-tasks').style.opacity = '';
+    $('#select-all-tasks')[0].style.opacity = '';
     for (var i = 0; i < allTasks.length; i++) {
       allTasks[i].parentNode.classList.add('through-remove');
       allTasks[i].parentNode.classList.remove('through');
